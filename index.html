@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#060710" />
+  <title>绯月行纪 · Scarlet Moon Chronicle</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main id="app">
+    <section id="stage" aria-label="绯月行纪 游戏画面">
+      <canvas id="game" width="1280" height="720"></canvas>
+      <div class="stage-grain" aria-hidden="true"></div>
+      <div class="stage-vignette" aria-hidden="true"></div>
+
+      <!-- 标题界面 -->
+      <section id="titleScreen" class="title-screen">
+        <div class="title-wash" aria-hidden="true"></div>
+        <div class="title-rune" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+
+        <div class="title-content">
+          <div class="eyebrow"><i></i> SCARLET MOON CHRONICLE</div>
+          <h1 class="game-title" aria-label="绯月行纪">
+            <span class="title-cn">绯月</span><span class="title-cn title-cn--thin">行纪</span>
+          </h1>
+          <div class="title-en">ASHES OF THE SPIRE</div>
+          <p class="title-copy">血月悬城，余烬无声。<br />少女执刃踏夜，穿过崩落的浮空之城。</p>
+
+          <div class="title-actions">
+            <button id="startBtn" class="primary-btn" type="button">
+              <span class="btn-glow"></span>
+              <span class="btn-label">踏入长夜</span>
+              <span class="btn-key">ENTER</span>
+            </button>
+            <button id="wardrobeBtn" class="wardrobe-open-btn" type="button">
+              <span class="wardrobe-open-mark">✦</span>
+              <span>换装</span>
+            </button>
+          </div>
+
+          <div class="title-controls">
+            <div><kbd>鼠标</kbd><span>瞄准</span></div>
+            <div><kbd>左键</kbd><span>攻击</span></div>
+            <div><kbd>右键</kbd><span>盾反</span></div>
+            <div><kbd>1</kbd><kbd>2</kbd><span>换武器</span></div>
+            <div><kbd>SPACE</kbd><span>跃起</span></div>
+          </div>
+        </div>
+
+        <div class="title-figure-label" aria-hidden="true">
+          <span>THE ASHEN BLADE</span>
+          <i></i>
+          <b>绯</b>
+        </div>
+
+        <div class="title-footer">
+          <span>横版动作冒险</span><s></s><span>剑与枪</span><s></s><span>单人旅程</span>
+        </div>
+
+        <button id="soundBtn" class="sound-btn" type="button" aria-label="切换声音">
+          <span class="sound-icon">◖</span><span id="soundLabel">声音 开</span>
+        </button>
+      </section>
+
+      <!-- 换装 -->
+      <section id="wardrobeScreen" class="wardrobe-screen" hidden>
+        <div class="wardrobe-wash" aria-hidden="true"></div>
+        <div class="wardrobe-panel">
+          <div class="wardrobe-heading">
+            <div class="modal-kicker">WARDROBE / 衣装室</div>
+            <h2>换装</h2>
+            <p>挑选今晚的衣装。颜色会立刻映在少女身上。</p>
+          </div>
+
+          <div id="outfitTabs" class="outfit-tabs">
+            <button type="button" data-outfit="blade" class="outfit-tab is-active">
+              <span>余烬剑装</span><small>ASHEN BLADE</small>
+            </button>
+            <button type="button" data-outfit="student" class="outfit-tab">
+              <span>校园制服</span><small>AFTER SCHOOL</small>
+            </button>
+          </div>
+
+          <div class="wardrobe-section-title"><span>配色</span><em>COLOR SETTING</em></div>
+          <div id="colorControls" class="color-controls"></div>
+          <p id="wardrobeNote" class="wardrobe-note"></p>
+
+          <div class="wardrobe-actions">
+            <button id="wardrobeDoneBtn" class="primary-btn primary-btn--small" type="button"><span class="btn-label">完成</span></button>
+            <button id="wardrobeResetBtn" class="ghost-btn" type="button">恢复默认</button>
+          </div>
+        </div>
+        <div class="wardrobe-preview-tag" aria-hidden="true">
+          <span>LIVE PREVIEW</span><i></i><b>绯</b>
+        </div>
+      </section>
+
+      <!-- 暂停 -->
+      <section id="pauseScreen" class="modal-screen" hidden>
+        <div class="modal-card pause-card">
+          <div class="modal-kicker">PAUSED</div>
+          <h2>长夜暂歇</h2>
+          <p class="modal-copy">呼吸。然后继续向前。</p>
+          <div class="pause-controls">
+            <div><span><kbd>A</kbd><kbd>D</kbd></span><em>移动</em></div>
+            <div><span><kbd>鼠标</kbd></span><em>瞄准 / 攻击方向</em></div>
+            <div><span><kbd>左键</kbd></span><em>当前武器攻击</em></div>
+            <div><span><kbd>右键</kbd></span><em>点按盾反 / 长按防御</em></div>
+            <div><span><kbd>1</kbd><kbd>2</kbd></span><em>切换剑 / 枪</em></div>
+            <div><span><kbd>SPACE</kbd></span><em>跳跃 / 二段跳</em></div>
+            <div><span><kbd>SHIFT</kbd></span><em>冲刺闪避</em></div>
+            <div><span><kbd>E</kbd> · <kbd>R</kbd></span><em>月华 / 换弹</em></div>
+          </div>
+          <div class="modal-actions">
+            <button id="resumeBtn" class="primary-btn primary-btn--small" type="button"><span class="btn-label">继续前行</span></button>
+            <button id="pauseSoundBtn" class="ghost-btn" type="button">声音：开</button>
+            <button id="quitBtn" class="ghost-btn" type="button">返回标题</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 结局 -->
+      <section id="endScreen" class="modal-screen" hidden>
+        <div class="modal-card end-card">
+          <div id="endKicker" class="modal-kicker">THE NIGHT ENDS</div>
+          <h2 id="endTitle">长夜已尽</h2>
+          <p id="endCopy" class="modal-copy"></p>
+          <div id="endStats" class="end-stats"></div>
+          <div class="modal-actions">
+            <button id="retryBtn" class="primary-btn primary-btn--small" type="button"><span class="btn-label">再次启程</span></button>
+            <button id="endQuitBtn" class="ghost-btn" type="button">返回标题</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 触屏控制 -->
+      <button id="touchPause" class="touch-pause" type="button" aria-label="暂停游戏">Ⅱ</button>
+
+      <div id="touchControls" class="touch-controls" aria-hidden="true">
+        <div class="touch-left">
+          <button class="touch-btn touch-move" data-control="left" type="button">‹</button>
+          <button class="touch-btn touch-move" data-control="right" type="button">›</button>
+        </div>
+        <div class="touch-right">
+          <button class="touch-btn touch-small touch-guard" data-control="guard" type="button">盾</button>
+          <button class="touch-btn touch-small" data-control="dash" type="button">闪</button>
+          <button class="touch-btn touch-small touch-special" data-control="special" type="button">月</button>
+          <button id="touchWeaponBtn" class="touch-btn touch-switch" data-control="switchWeapon" type="button">剑</button>
+          <button id="touchAttackBtn" class="touch-btn touch-sword" data-control="attack" type="button">斩</button>
+          <button class="touch-btn touch-jump" data-control="jump" type="button">跃</button>
+        </div>
+      </div>
+
+      <div class="stage-corners" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    </section>
+    <div id="rotateHint" class="rotate-hint" aria-hidden="true">
+      <div class="rotate-inner">
+        <div class="rotate-phone"><i></i></div>
+        <div class="rotate-kicker">SCARLET MOON CHRONICLE</div>
+        <h2>请横屏游玩</h2>
+        <p>横版冒险，需要更宽的视野。</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/utils.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/hero.js"></script>
+  <script src="js/enemies.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/wardrobe.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
